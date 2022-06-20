@@ -1,0 +1,21 @@
+Now we implement volumes to store data in our applications
+
+Unlike other operating systems, Linux unifies all storage into a single tree. Storage
+devices such as disk partitions or USB disk partitions are attached to specific locations
+in that tree. Those locations are called mount points. A mount point defines the location in the tree, the access properties to the data at that point (for example, writability), and the source of the data mounted at that point (for example, a specific hard
+disk, USB device, or memory-backed virtual disk). Figure 4.1 depicts a filesystem constructed from multiple storage devices, with each device mounted to a specific location and level of access
+
+Mount point is a link to storage, it has information such as the source of data mount and access type to storage aswell.
+
+the
+image that a container is created from is mounted at that container’s file tree root, or
+at the / point,every container has a different set of mount points.
+
+We save our volumes on our host filesystem, we points from our container filesystem to our host filesystem..
+
+This example touches on an important feature of volumes. When you mount a volume on a container filesystem, it replaces the content that the image provides at that
+location. By default, the nginx:latest image provides some default configuration at
+/etc/nginx/conf.d/default.conf, but when you created the bind mount with a destination at that path, the content provided by the image was overridden by the content
+on the host. This behavior is the basis for the polymorphic container pattern discussed later in the chapter.
+
+pg93(also read ch11 and analyze the project...)
