@@ -1,0 +1,22 @@
+version: "3.7"  #version and services are on the same lvl
+volumes:
+   pgdata: #empty definition uses volume defaults
+services: #services has 3 keys 
+   postgres:
+     image: dockerinaction/postgres:11-alpine
+     volumes:  # Add some volume specifications underneath this key
+       - type: volume
+         source:  pgdata          #named volume above
+         target: /var/lib/postgresql/data #postgres service mounts at this destination
+     environment:
+       POSTGRES_PASSWORD: example
+   mariadb:
+     image: dockerinaction/mariadb:10-bionic
+     environment:
+       MYSQL_ROOT_PASSWORD: example
+   adminer:
+     image: dockerinaction/adminer:4
+     ports:
+      - 8089:8080 #list of ports, "-" signifies list
+     deploy:
+        replicas: 1

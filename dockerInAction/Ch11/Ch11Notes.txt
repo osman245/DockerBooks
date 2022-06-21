@@ -1,0 +1,97 @@
+Yaml is preferred over JSON because we can add comments to the code 
+using "#".
+
+Yaml uses three types of data  map(key:value pairs), scalar values and
+lists.
+
+A bunch of rules are used for
+plain style scalars. Plain scalars
+ Must not be empty
+ Must not contain leading or trailing whitespace characters
+ Must not begin with an indicator character (for example, - or :) in places where
+doing so would cause an ambiguity
+ Must never contain character combinations using a colon (:) and hash sign (#)
+
+
+Lists (or block sequences) are series of nodes in which each element is denoted by a
+leading hyphen (-) indicator. For example:
+- item 1
+- item 2
+- item 3
+- # an empty item
+- item 4
+
+Finally, YAML uses indentation to indicate content scope. Scope determines which
+block each element belongs to. There are a few rules:
+- Only spaces can be used for indentation.
+- The amount of indentation does not matter as long as
+– All peer elements (in the same scope) have the same amount of indentation.
+– Any child elements are further indented.
+These documents are equivalent:
+top-level:
+ second-level: # three spaces
+ third-level: # two more spaces
+ - "list item" # single additional indent on items in this list
+ another-third-level: # a third-level peer with the same two spaces
+ fourth-level: "string scalar" # 6 more spaces
+ another-second-level: # a 2nd level peer with three spaces
+ - a list item # list items in this scope have
+ # 15 total leading spaces
+ - a peer item # A peer list item with a gap in the list
+---
+# every scope level adds exactly 1 space
+top-level:
+ second-level:
+ third-level:
+ - "list item"
+ another-third-level:
+ fourth-level: "string scalar"
+ another-second-level:
+ - a list item
+ - a peer item
+
+
+ Keep in mind that this document is in YAML, and all of the properties with the same
+indentation belong to the same map. This Compose file has two top-level properties:
+version and services. The version property tells the Compose interpreter which
+fields and structure to anticipate. The services property is a map of service names to
+service definitions. Each service definition is a map of properties.
+ In this case, the services map has three entries with keys: postgres, mariadb, and
+adminer. Each of those entries defines a service by using a small set of service properties such as image, environment, or ports. Declarative documents make it simple to
+concretely specify a full service definition. Doing so will reduce implicit dependencies
+on default values and reduce the educational overhead for your fellow team members.
+Omitting a property will use the default values (just as when using the command-line
+interface). These services each define the container image. The postgres and mariadb
+services specify environment variables. The adminer service uses ports to route requests
+to port 8080 on the host to port 8080 in the service container
+
+We use the compose file
+ using "stack". A Docker
+stack is a collection of services
+
+docker stack deploy -c databases.yml my-databases
+
+volumes in compose:
+
+The stack will create a new volume each time a container is replaced, and a new volume will be created for each replica. This 
+would cause problems in a world where maintaining stored data is crucial.
+
+TO address this issue we use a top level property, called "volume"
+
+volumes is a map of volume definitions; the key is the name of the volume, and the
+value is a structure defining the volume properties.
+
+
+Summary: 
+A service is any process, functionality, or data that must be discoverable and
+available over a network.
+ Orchestrators such as Swarm track and automatically reconcile user-provided
+desired state and the current state of Docker objects including services, volumes, and networks.
+Summary 243
+ Orchestrators automate service replication, resurrection, deployments, health
+checking, and rollback.
+ The desired state is what the user wants the system to be doing, or what it is supposed to be doing. People can describe desired state in a declarative style by
+using Compose files.
+ Compose files are structured documents represented in YAML.
+ Declarative environment descriptions with Compose enable environment versioning, sharing, iteration, and consistency.
+ Compose can model services, volumes, and networks. Consult the official Compose file reference material for a full description of its capabilities.
