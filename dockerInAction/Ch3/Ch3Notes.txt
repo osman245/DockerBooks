@@ -1,0 +1,42 @@
+git clone https://github.com/dockerinaction/ch3_dockerfile.git
+docker build -t dia_ch3/dockerfile:latest ch3_dockerfile
+--> In this example, you copy the project from a 
+public source repository onto your computer and then 
+build and install a Docker image by using the Dockerfile
+ included with
+that project
+
+
+manually load images from a file...
+docker pull busybox:latest
+docker save -o myfile.tar busybox:latest
+docker rmi busybox
+docker load –i myfile.tar
+
+
+docker rmi dia_ch3/dockerfile
+rm -rf ch3_dockerfile
+--> remove image and rm container forcefully.
+
+image === a collection of image layers
+layer is a set of files and file metadata that is package and distributed as an atomic unit.
+pg83
+
+
+Summary:
+
+Human users of Docker use repository names to communicate which software
+they would like Docker to install.
+ Docker Hub is the default Docker registry. You can find software on Docker
+Hub through either the website or the docker command-line program.
+ The docker command-line program makes it simple to install software that’s
+distributed through alternative registries or in other forms.
+ The image repository specification includes a registry host field.
+ The docker load and docker save commands can be used to load and save
+images from TAR archives.
+ Distributing a Dockerfile with a project simplifies image builds on user machines.
+ Images are usually related to other images in parent/child relationships. These
+relationships form layers. When we say that we have installed an image, we are
+saying that we have installed a target image and each image layer in its lineage.
+ Structuring images with layers enables layer reuse and saves bandwidth during
+distribution and storage space on your computer and image distribution servers.

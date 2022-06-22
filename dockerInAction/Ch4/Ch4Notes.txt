@@ -12,10 +12,13 @@ image that a container is created from is mounted at that container’s file tre
 at the / point,every container has a different set of mount points.
 
 We save our volumes on our host filesystem, we points from our container filesystem to our host filesystem..
+Docker volumes on Windows are always created in the path of the graph driver, which is where Docker stores all image layers, writeable container layers and volumes. By default the root of the graph driver in Windows is C:\ProgramData\docker
+
+
 
 This example touches on an important feature of volumes. When you mount a volume on a container filesystem, it replaces the content that the image provides at that
 location. By default, the nginx:latest image provides some default configuration at
 /etc/nginx/conf.d/default.conf, but when you created the bind mount with a destination at that path, the content provided by the image was overridden by the content
 on the host. This behavior is the basis for the polymorphic container pattern discussed later in the chapter.
 
-pg93(also read ch11 and analyze the project...)
+pg93

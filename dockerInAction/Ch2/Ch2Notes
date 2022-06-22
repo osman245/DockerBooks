@@ -1,0 +1,123 @@
+Now we will go more in depth on the docker tool.
+
+PID
+--> a set of unique numbers that identify processes
+docker exec namespaceA ps
+-->you use docker exec command to rin addtional processes in a running container.
+
+In the preceding section, you saw how Docker helps you avoid software conflicts with
+process isolation. But if you’re not careful, you can end up building systems that create metaconflicts, or conflicts between containers in the Docker layer
+
+Automatically restarting containers:
+
+--> The only reason you might not want to adopt this directly is that during backoff
+periods, the container isn’t running. Containers waiting to be restarted are in the
+restarting state.
+
+an init program is used to maintain and launch the state of other programs, any process with PID 1 is treated like an init process..
+
+docker top lamp-test
+-->prints out all processes running in lamp-test.show the host PID for each of the processes in the container. You’ll see supervisord, mysql, and apache included in the list of running programs
+
+Docker exec lamp-test ps
+-->to know the PID in the containers pid namespace
+
+Docker exec lamp-test kill <PID>
+Run the Linux kill program inside the lamp-test container and tell the apache2 process to shut down
+
+The ease of clean up is one of the strongest reasons to use containers and Docker.
+
+docker ps -a
+to list all containers on your computer
+docker rm wp
+to remove the wp container..
+
+The key difference is that when you stop a process by using the -f flag,
+Docker sends a SIG_KILL signal, which immediately terminates the receiving process.
+In contrast, using docker stop will send a SIG_HUP signal. Recipients of SIG_HUP have
+time to perform finalization and cleanup tasks. The SIG_KILL signal makes for no
+such allowances and can result in file corruption or poor network experiences
+
+ Containers can be run with virtual terminals attached to the user’s shell or in
+detached mode.
+46 CHAPTER 2 Running software in containers
+ By default, every Docker container has its own PID namespace, isolating process
+information for each container.
+ Docker identifies every container by its generated container ID, abbreviated
+container ID, or its human-friendly name.
+
+Commands:
+
+docker run --detach \
+ --name web nginx:latest
+
+-->docker install the image nginx:latest from the nginx repository hosted on dockerhub and run the software.
+
+docker run -d \
+ --name mailer \
+ dockerinaction/ch2_mailer
+
+--> docker installs the mailer image from dockerhub and runs the software.
+
+docker run --interactive --tty --link web:web -- --name web_test busybox:1.29 /bin/sh
+
+this links web image with busybox image and creates a container web_test that has standard input open for the container and has an a virtual terminal created for the container.
+
+docker ps
+--> get all docker processes
+docker restart web
+--> restart container
+docker logs web
+---> get the logs for web
+
+docker stop web
+---> stops the web container
+
+docker run -d --name namespaceA \
+ busybox:1.29 /bin/sh -c "sleep 30000"
+
+--> Docker installs the busybox image and does the sleep command in the container
+
+docker exec 7cb5d2b9a7ea ps
+--> excecute process
+docker stop 7cb5d2b9a7ea
+--> stop process
+docker ps -a
+--> get all processes
+
+docker run -d --name wp --read-only
+wordpress:5.0.0-php7.2-apache
+--> run a docker container named wp with image wordpress:5.00-php..
+
+docker inspect --format "{{.State.Running}}" wp
+--> inspect the wp container is running.
+
+docker container diff wp_writable
+--> difference in the container
+
+docker run --env MY_ENVIRONMENT_VAR="this is a test"
+busybox:1.29
+env
+-->Injects an environment
+variable,then executes env command inside container.
+
+docker create \
+--env WORDPRESS_DB_HOST=<my database hostname> \
+--env WORDPRESS_DB_USER=site_admin
+--env WORDPRESS_DB_PASSWORD=MeowMix42 \
+ wordpress:5.0.0-php7.2-apache
+-->injecting environment variables to access the database in the container.
+--> database usually has a user and password inorder to successfully login into the database.
+
+Summary:
+---> All containers are in any one of six distinct states: created, running, restarting,
+paused, removing, or exited.
+----> The docker exec command can be used to run additional processes inside a
+running container.
+---> A user can pass input or provide additional configuration to a process in a container by specifying environment variables at container-creation time.
+---> Using the --read-only flag at container-creation time will mount the container
+filesystem as read-only and prevent specialization of the container.
+----> A container restart policy, set with the --restart flag at container-creation
+time, will help your systems automatically recover in the event of a failure.
+--> Docker makes cleaning up containers with the docker rm command as simple as
+creating them.

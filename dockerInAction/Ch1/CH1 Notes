@@ -1,3 +1,32 @@
 Docker is a tool that helps solve common problems such as installing, removing,
 upgrading, distributing, trusting, and running software. It’s open source Linux software, which means that anyone can contribute to it and that it has benefited from a
 variety of perspectives.
+
+docker run dockerinaction/hello_world
+Steps:
+1.) docker looks for this "dockerinaction" image in repository
+2.) if not found, it pulls and downloads it from the dockerhub registry(image layers are installed on this computer)
+3.) Docker creaets a new container and starts the program
+4.) The container is running
+
+Docker simplifies your experience with installing, running, publishing, and removing
+software.
+It’s a command-line program, an engine background process, and a set
+of remote services. It’s integrated with community tools provided by Docker Inc.
+
+The container abstraction is at the core of its logistical approach.
+Working with containers instead of software creates a consistent interface and
+enables the development of more sophisticated tools.
+
+Containers help keep your computers tidy because software inside containers
+can’t interact with anything outside those containers, and no shared dependencies can be formed.
+Because Docker is available and supported on Linux, macOS, and Windows,
+most software packaged in Docker images can be used on any computer.
+
+Docker doesn’t provide container technology; it hides the complexity of working directly with the container software and turns best practices into reasonable
+defaults.
+
+Docker works with the greater container ecosystem; that ecosystem is rich with
+tooling that solves new and higher-level problems.
+
+If you need help with a command, you can always consult the docker help subcommand.
